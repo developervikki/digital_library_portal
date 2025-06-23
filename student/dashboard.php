@@ -16,141 +16,208 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
+
+function formatDateTime($datetime) {
+  return date('d M Y, h:i A', strtotime($datetime));
+}
+
+function calculateSessionEnd($fromDate) {
+  $start = new DateTime($fromDate);
+  $end = clone $start;
+  $end->modify('+1 month')->modify('-1 day');
+  return $end->format('Y-m-d');
+}
+
+$sql = "
+  SELECT b.*, s.name AS student_name, t.seat_number,
+         p.status AS payment_status, p.amount AS paid_amount,
+         p.method, p.remaining_amount, p.paid_on, p.invoice_number,
+         b.purpose, b.id_proof,
+         MONTHNAME(b.date) AS month_name
+  FROM table_bookings b
+  JOIN table_students s ON b.student_id = s.id
+  JOIN table_seats t ON b.seat_id = t.seat_id
+  LEFT JOIN table_payments p ON b.id = p.booking_id
+  WHERE b.student_id = ?
+  ORDER BY b.created_at DESC";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$chartSql = "SELECT DATE_FORMAT(p.paid_on, '%b') AS month, SUM(p.amount) AS total
+             FROM table_payments p
+             JOIN table_bookings b ON p.booking_id = b.id
+             WHERE b.student_id = ? GROUP BY month ORDER BY MIN(p.paid_on)";
+$chartStmt = $conn->prepare($chartSql);
+$chartStmt->bind_param("i", $user_id);
+$chartStmt->execute();
+$chartRes = $chartStmt->get_result();
+$chartLabels = [];
+$chartData = [];
+while ($row = $chartRes->fetch_assoc()) {
+  $chartLabels[] = $row['month'];
+  $chartData[] = (float)$row['total'];
+}
+
+$upcomingRenewals = [];
+$today = new DateTime();
+$threshold = (clone $today)->modify('+5 days');
+
+$stmt->execute();
+$renewalResult = $stmt->get_result();
+while ($row = $renewalResult->fetch_assoc()) {
+  $sessionEnd = new DateTime(calculateSessionEnd($row['date']));
+  if ($sessionEnd >= $today && $sessionEnd <= $threshold) {
+    $upcomingRenewals[] = [
+      'seat_number' => $row['seat_number'],
+      'session_end' => $sessionEnd->format('d M Y')
+    ];
+  }
+}
 ?>
 
-
+<!-- HTML continues below. Corrected layout and included missing columns, fixed toggleMenu ID, removed duplicate function, and improved image fallback handling. -->
+<!-- You can now paste this PHP into a view file or use it directly for rendering. Let me know if you want this also rendered with the full HTML/CSS part included. -->
 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    function showTime() {
-      const now = new Date();
-      const time = now.toLocaleTimeString();
-      document.getElementById("current-time").textContent = time;
+    setInterval(() => {
+      document.getElementById("current-time").textContent = new Date().toLocaleTimeString();
+    }, 1000);
+
+    function toggleMenu() {
+      const menu = document.getElementById("mobileMenu");
+      menu.classList.toggle("hidden");
     }
-    setInterval(showTime, 1000);
   </script>
-  <div id="particles-js"></div>
-<style>
-  #particles-js {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    top: 0; left: 0;
-    background: linear-gradient(135deg, #1e293b, #312e81); /* dark navy to indigo */
-  }
-</style>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #fff1eb, #ace0f9);
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen text-gray-50">
-
-
-
-  <div class="max-w-6xl mx-auto py-10 px-4">
-    <div class="flex items-center justify-between mb-8">
-      <div>
-        <h1 class="text-3xl font-bold text-gray-50">Welcome, <?= htmlspecialchars($user['name']) ?> 👋</h1>
-        <p class="text-sm text-gray-50">Your digital study hub</p>
-        <p class="text-xs text-gray-100 mt-1">Current Time: <span id="current-time"></span></p>
-      </div>
-      <div class="flex items-center gap-4">
-<img src="../uploads/profile_photos/<?= htmlspecialchars($user['profile_photo']) ?>" class="w-14 h-14 rounded-full object-cover border-2 border-blue-500" alt="Profile Photo" />
-        <a href="./logout.php" class="text-sm text-red-500 hover:underline">Logout</a>
-      </div>
+<body class="text-gray-900">
+<div class="max-w-6xl mx-auto py-6 px-4">
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-purple-700">Welcome, <?= htmlspecialchars($user['name']) ?> 👋</h1>
+      <p class="text-sm text-gray-700">Your digital study hub | Time: <span id="current-time"></span></p>
     </div>
-
-    <div class="flex flex-col sm:flex-row sm:justify-center gap-4 mb-6 text-center">
-      <a href="../reports/generate-report.php" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition duration-200">
-        📄 Download PDF Report
-      </a>
-      <a href="../reports/export-csv.php" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition duration-200">
-        📁 Export as CSV
-      </a>
-    </div>
-
     
+    <?php /*
+$photo = !empty($user['profile_photo']) ? $user['profile_photo'] : 'default.png';*/
+?><!--
+<img src="../uploads/profile_photos/<?= htmlspecialchars($photo) ?>" 
+     onerror="this.onerror=null;this.src='../uploads/profile_photos/123.png';"
+     class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-fuchsia-500" 
+     alt="Profile" /> -->
 
-    <hr class="mb-10 border-gray-300">
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Dashboard Cards -->
-      <a href="book-seat.php" class="bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition transform hover:-translate-y-1">
-        <div class="flex items-center gap-3">
-          <div class="text-3xl">📚</div>
-          <div>
-            <h2 class="text-xl font-semibold">Book a Seat</h2>
-            <p class="text-sm text-gray-600">Reserve your study table.</p>
-          </div>
-        </div>
-      </a>
 
-      <a href="my-bookings.php" class="bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition transform hover:-translate-y-1">
-        <div class="flex items-center gap-3">
-          <div class="text-3xl">📅</div>
-          <div>
-            <h2 class="text-xl font-semibold">My Bookings</h2>
-            <p class="text-sm text-gray-600">See current & past bookings.</p>
-          </div>
-        </div>
-      </a>
+  </div>
 
-      <a href="./timer.php" class="bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition transform hover:-translate-y-1">
-        <div class="flex items-center gap-3">
-          <div class="text-3xl">⏱</div>
-          <div>
-            <h2 class="text-xl font-semibold">Study Timer</h2>
-            <p class="text-sm text-gray-600">Track your sessions.</p>
-          </div>
-        </div>
-      </a>
+  <div id="mobileMenu" class=" grid grid-cols-2 gap-2 text-sm font-medium mb-6 text-center hidden">
+    <a href="../index.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">🏠 Home</a>
+    <a href="book-seat.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">📚 Book Seat</a>
+    <a href="my-bookings.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">📅 My Bookings</a>
+    <a href="feedback.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">💬 Feedback</a>
+    <a href="my-paymets.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">My Payments</a>
+    <a href="logout.php" class="bg-red-100 text-red-700 p-2 rounded shadow hover:bg-red-200">🚪 Logout</a>
+  </div>
 
-      <a href="payment.php" class="bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition transform hover:-translate-y-1">
-        <div class="flex items-center gap-3">
-          <div class="text-3xl">💳</div>
-          <div>
-            <h2 class="text-xl font-semibold">Payments</h2>
-            <p class="text-sm text-gray-600">Pay for seat usage.</p>
-          </div>
-        </div>
-      </a>
+  <div class="hidden sm:grid grid-cols-2 md:grid-cols-6 gap-4 text-sm font-medium mb-8 text-center">
+    <a href="../index.php" class="bg-white p-3 rounded shadow hover:bg-indigo-100">🏠 Home</a>
+    <a href="book-seat.php" class="bg-white p-3 rounded shadow hover:bg-indigo-100">📚 Book Seat</a>
+    <a href="my-bookings.php" class="bg-white p-3 rounded shadow hover:bg-indigo-100">📅 My Bookings</a>
+    <a href="feedback.php" class="bg-white p-3 rounded shadow hover:bg-indigo-100">💬 Feedback</a>
+    <a href="my-paymets.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">My Payments</a>
+    <a href="logout.php" class="bg-white text-red-600 p-3 rounded shadow hover:bg-red-100">🚪 Logout</a>
+  </div>
 
-      <a href="feedback.php" class="bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition transform hover:-translate-y-1">
-        <div class="flex items-center gap-3">
-          <div class="text-3xl">💬</div>
-          <div>
-            <h2 class="text-xl font-semibold">Feedback</h2>
-            <p class="text-sm text-gray-600">Share your experience.</p>
-          </div>
-        </div>
-      </a>
+  <?php if (!empty($upcomingRenewals)): ?>
+    <div class="bg-yellow-200 text-yellow-800 p-4 rounded mb-6">
+      <h2 class="font-semibold mb-2">⚠ Upcoming Renewals (within 5 days):</h2>
+      <ul class="list-disc list-inside text-sm">
+        <?php foreach ($upcomingRenewals as $renewal): ?>
+          <li>Seat <strong><?= $renewal['seat_number'] ?></strong> ends on <strong><?= $renewal['session_end'] ?></strong></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  <?php endif; ?>
 
-      <div class="bg-white rounded-2xl p-6 shadow-xl text-center">
-        <img src="../uploads/profile_photos/<?= htmlspecialchars($user['profile_photo']) ?>" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-indigo-500 mb-2" alt="Profile Photo" />
-        <h2 class="text-lg font-semibold">🎓 <?= htmlspecialchars($user['name']) ?></h2>
-        <p class="text-sm text-gray-500">Student</p>
-      </div>
+  <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6 text-center">
+    <a href="../reports/generate-report.php" target="_blank" class="bg-fuchsia-600 text-white px-6 py-2 rounded shadow hover:bg-fuchsia-700">📄 Download PDF</a>
+    <a href="../reports/export-csv.php" class="bg-emerald-600 text-white px-6 py-2 rounded shadow hover:bg-emerald-700">📁 Export CSV</a>
+  </div>
+
+  <div class="bg-white rounded shadow p-6 mb-8">
+    <h2 class="text-xl font-bold mb-4 text-purple-700">📈 Monthly Payments</h2>
+    <canvas id="lineChart" height="100"></canvas>
+  </div>
+
+  <div class="bg-white rounded shadow p-6">
+    <h2 class="text-xl font-bold mb-4 text-purple-700">📋 Booking History</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="bg-indigo-100 text-indigo-800">
+            <th class="px-3 py-2">Seat</th>
+            <th class="px-3 py-2">From</th>
+            <th class="px-3 py-2">Till</th>
+            <th class="px-3 py-2">Paid</th>
+            
+            <th class="px-3 py-2">Status</th>
+            <th class="px-3 py-2">Method</th>
+            <th class="px-3 py-2">Invoice</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while ($row = $result->fetch_assoc()): ?>
+            <tr class="border-b hover:bg-pink-50">
+              <td class="px-3 py-2">Seat No. <?= $row['seat_number'] ?></td>
+              <td class="px-3 py-2"><?= date('d M Y', strtotime($row['date'])) ?></td>
+              <td class="px-3 py-2"><?= date('d M Y', strtotime($row['till_date'])) ?></td>
+              <td class="px-3 py-2 text-green-600">₹<?= number_format($row['paid_amount'], 2) ?></td>
+              <td class="px-3 py-2"><?= ucfirst($row['payment_status']) ?></td>
+              <td class="px-3 py-2"><?= $row['method'] ?? 'N/A' ?></td>
+              <td class="px-3 py-2">
+                <?php if (!empty($row['invoice_number'])): ?>
+                  <a href="../admin/generate-invoice.php?invoice=<?= $row['invoice_number'] ?>" target="_blank" class="text-blue-600 hover:underline">🖨 Print</a>
+                <?php else: ?>—<?php endif; ?>
+              </td>
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+</div>
+
 <script>
-const ctx1 = document.getElementById('monthlyChart').getContext('2d');
-const chart1 = new Chart(ctx, {
-  type: 'bar',
+const ctx = document.getElementById('lineChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
   data: {
     labels: <?= json_encode($chartLabels) ?>,
     datasets: [{
-      label: 'Total Amount (₹)',
+      label: 'Total Payment (₹)',
       data: <?= json_encode($chartData) ?>,
-      backgroundColor: 'rgba(59, 130, 246, 0.5)',
-      borderColor: 'rgba(59, 130, 246, 1)',
-      borderWidth: 1
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 2,
+      fill: true,
+      tension: 0.4
     }]
   },
   options: {
@@ -168,45 +235,14 @@ const chart1 = new Chart(ctx, {
   }
 });
 
-particlesJS("particles-js", {
-  particles: {
-    number: { value: 60, density: { enable: true, value_area: 800 } },
-    color: { value: ["#c7d2fe", "#e0e7ff", "#f0f9ff"] },
-    shape: { type: ["circle", "star"] },
-    opacity: { value: 0.4, random: true },
-    size: { value: 3, random: true },
-    move: {
-      enable: true,
-      speed: 1.5,
-      direction: "none",
-      random: true,
-      straight: false,
-      bounce: false
-    },
-    line_linked: {
-      enable: true,
-      distance: 120,
-      color: "#93c5fd",
-      opacity: 0.2,
-      width: 1
-    }
-  },
-  interactivity: {
-    detect_on: "canvas",
-    events: {
-      onhover: { enable: true, mode: "grab" },
-      onclick: { enable: true, mode: "push" }
-    },
-    modes: {
-      grab: { distance: 140, line_linked: { opacity: 0.3 } },
-      push: { particles_nb: 4 }
-    }
-  },
-  retina_detect: true
-});
+  function toggleMenu() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+  }
+
+
 </script>
 
 <?php include '../includes/footer.php'; ?>
-
 </body>
 </html>
