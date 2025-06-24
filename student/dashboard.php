@@ -128,11 +128,11 @@ $photo = !empty($user['profile_photo']) ? $user['profile_photo'] : 'default.png'
   </div>
 
   <div id="mobileMenu" class=" grid grid-cols-2 gap-2 text-sm font-medium mb-6 text-center hidden">
-    <a href="../index.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">🏠 Home</a>
+    <a href="../index.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200"> Home</a>
     <a href="book-seat.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">📚 Book Seat</a>
     <a href="my-bookings.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">📅 My Bookings</a>
     <a href="feedback.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">💬 Feedback</a>
-    <a href="my-paymets.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">My Payments</a>
+    <a href="my-payments.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">My Payments</a>
     <a href="logout.php" class="bg-red-100 text-red-700 p-2 rounded shadow hover:bg-red-200">🚪 Logout</a>
   </div>
 
@@ -141,8 +141,8 @@ $photo = !empty($user['profile_photo']) ? $user['profile_photo'] : 'default.png'
     <a href="book-seat.php" class="bg-white p-3 rounded shadow hover:bg-indigo-100">📚 Book Seat</a>
     <a href="my-bookings.php" class="bg-white p-3 rounded shadow hover:bg-indigo-100">📅 My Bookings</a>
     <a href="feedback.php" class="bg-white p-3 rounded shadow hover:bg-indigo-100">💬 Feedback</a>
-    <a href="my-paymets.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">My Payments</a>
-    <a href="logout.php" class="bg-white text-red-600 p-3 rounded shadow hover:bg-red-100">🚪 Logout</a>
+    <a href="my-payments.php" class="bg-pink-100 p-2 rounded shadow hover:bg-pink-200">My Payments</a>
+    <a href="logout.php" class="bg-white text-red-600 p-3 rounded shadow hover:bg-red-100"> Logout</a>
   </div>
 
   <?php if (!empty($upcomingRenewals)): ?>
