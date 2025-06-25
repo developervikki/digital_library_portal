@@ -6,7 +6,7 @@ $message = '';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $name = trim($_POST['name']);
   $email = trim($_POST['email']);
-  $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+  $password = password_hash($_POST['password'], PASSWORD_BCRYPT); 
 
   // Check if email already exists
   $stmt = $conn->prepare("SELECT id FROM table_admins WHERE email = ?");
