@@ -57,7 +57,7 @@ for ($i = 5; $i >= 0; $i--) {
 
     /* Scrollbar for sidebar if overflow */
     aside::-webkit-scrollbar {
-      width: 6px;
+      width: 6px; 
     }
     aside::-webkit-scrollbar-thumb {
       background: #7c3aed;
