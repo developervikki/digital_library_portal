@@ -2,7 +2,7 @@
 session_start();
 require_once 'includes/db.php';
 
-$error = '';
+$error = ''; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
