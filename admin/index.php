@@ -3,7 +3,7 @@ session_start();
 require_once '../includes/db.php';
 
 // ✅ Redirect to dashboard if already logged in as admin
-if (isset($_SESSION['user_id']) && ($_SESSION['user_role'] ?? '') === 'admin') {
+if (isset($_SESSION['user_id']) && ($_SESSION['user_role'] ?? '') === 'admin') { 
     header("Location: dashboard.php");
     exit();
 }
