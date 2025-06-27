@@ -20,7 +20,7 @@ if ($admin_id) {
 }
 
 // Handle Add/Update
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
   $seat_number = trim($_POST['seat_number']);
   $shift = $_POST['shift'] ?? '';
   $start_time = $_POST['start_time'] ?? '';
