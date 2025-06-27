@@ -5,7 +5,7 @@ requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'])) {
   $booking_id = intval($_POST['booking_id']);
-  $stmt = $conn->prepare("DELETE FROM table_bookings WHERE id = ?");
+  $stmt = $conn->prepare("DELETE FROM table_bookings WHERE id = ?"); 
   $stmt->bind_param("i", $booking_id);
 
   if ($stmt->execute()) {
