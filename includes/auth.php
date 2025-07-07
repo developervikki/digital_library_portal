@@ -25,7 +25,7 @@ function getUserId() {
 function getUserRole(): ?string {
     return $_SESSION['user_role'] ?? null;
 }
-
+ 
 /**
  * ✅ Redirect to login page if user is not logged in
  */
