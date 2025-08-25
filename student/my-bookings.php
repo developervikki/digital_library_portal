@@ -4,7 +4,7 @@ include_once('../includes/header.php');
 
 // Simulated login – replace with session ID
 if (!isset($_SESSION['student_id'])) {
-    header("Location: ../login.php");
+    header("Location: ../login.php"); 
     exit;
 } 
 
