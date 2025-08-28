@@ -7,7 +7,7 @@ include_once('../includes/header.php');
 $message = ""; 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $student_id = 1; // Replace with actual logged-in user ID from session
-    $feedback = trim($_POST['feedback']);
+    $feedback = trim($_POST['feedback']); 
 
     if (!empty($feedback)) {
         $stmt = $conn->prepare("INSERT INTO table_feedback (student_id, message) VALUES (?, ?)");
