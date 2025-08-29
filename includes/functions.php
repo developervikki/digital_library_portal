@@ -5,7 +5,7 @@ function sanitize($data) {
     return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
 }
 
-// Format seconds to HH:MM:SS
+// Format seconds to HH:MM:SS 
 function formatDuration($seconds) {
     $h = str_pad(floor($seconds / 3600), 2, '0', STR_PAD_LEFT);
     $m = str_pad(floor(($seconds % 3600) / 60), 2, '0', STR_PAD_LEFT);
