@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_all_read'])) {
   $conn->query("UPDATE table_notifications SET is_read = 1");
   header("Location: " . $_SERVER['PHP_SELF']);
   exit;
-}
+ 
 
 // Get unread notifications
 $notifyQuery = "SELECT * FROM table_notifications WHERE is_read = 0 ORDER BY created_at DESC LIMIT 10";
@@ -63,3 +63,4 @@ $unreadCount = $notifyResult ? $notifyResult->num_rows : 0;
   display: block;
 }
 </style>
+
