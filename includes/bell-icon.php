@@ -5,7 +5,7 @@ require_once '../includes/db.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_all_read'])) {
   $conn->query("UPDATE table_notifications SET is_read = 1");
   header("Location: " . $_SERVER['PHP_SELF']);
-  exit;
+  exit; 
  
 
 // Get unread notifications
@@ -63,4 +63,5 @@ $unreadCount = $notifyResult ? $notifyResult->num_rows : 0;
   display: block;
 }
 </style>
+
 
