@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $response = ['amount' => 0];
 
-  if ($fees_type && $from && $to && $seat_id) {
+  if ($fees_type && $from && $to && $seat_id) { 
     $seatStmt = $conn->prepare("SELECT daily_fee, half_month_fee, monthly_fee FROM table_seats WHERE seat_id = ?");
     $seatStmt->bind_param("s", $seat_id);
     $seatStmt->execute();
@@ -34,3 +34,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   echo json_encode($response);
 }
 ?>
+
