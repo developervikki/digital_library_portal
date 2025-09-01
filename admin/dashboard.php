@@ -4,7 +4,7 @@ require_once '../includes/auth.php';
 requireAdmin();
  
 // Fetch stats 
-$totalSeatsResult = $conn->query("SELECT COUNT(*) AS total FROM table_seats WHERE is_active = 1");
+$totalSeatsResult = $conn->query("SELECT COUNT(*) AS total FROM table_seats WHERE is_active = 1"); 
 $totalSeats = $totalSeatsResult->fetch_assoc()['total'] ?? 0;
 
 $today = date('Y-m-d');
@@ -209,5 +209,6 @@ for ($i = 5; $i >= 0; $i--) {
   </script>
 </body>
 </html>
+
 
 
