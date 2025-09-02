@@ -6,7 +6,7 @@ include_once('../includes/header.php');
 if (!isset($_SESSION['student_id'])) {
     header("Location: ../login.php"); 
     exit;
-} 
+}  
 
 
 $student_id = 3;
