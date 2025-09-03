@@ -4,7 +4,7 @@ require_once('../includes/db.php');
 // Simulated login 
 $student_id = 1;  
 
-header('Content-Type: text/csv');
+header('Content-Type: text/csv'); 
 header('Content-Disposition: attachment;filename="time-logs.csv"');
 
 $output = fopen('php://output', 'w');
@@ -21,3 +21,4 @@ while ($row = $result->fetch_assoc()) {
 
 fclose($output);
 exit;
+
