@@ -5,7 +5,7 @@ if (!isset($_SESSION['student_id']))
   exit();  
 }
 
-include '../includes/db.php';
+include '../includes/db.php'; 
 include '../includes/header.php';
 
 $user_id = $_SESSION['student_id'];
