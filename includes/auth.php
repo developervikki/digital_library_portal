@@ -6,7 +6,7 @@ session_start();
 require_once __DIR__ . '/db.php';  // Only once 
 
 /**
- * ✅ Check if a user is logged in
+ * ✅ Check if a user is logged in 
  */
 function isLoggedIn(): bool {
     return isset($_SESSION['user_id']) && isset($_SESSION['user_role']);
