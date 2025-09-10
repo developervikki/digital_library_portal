@@ -5,7 +5,7 @@ requireAdmin();
  
 // Fetch stats 
 $totalSeatsResult = $conn->query("SELECT COUNT(*) AS total FROM table_seats WHERE is_active = 1"); 
-$totalSeats = $totalSeatsResult->fetch_assoc()['total'] ?? 0;
+$totalSeats = $totalSeatsResult->fetch_assoc()['total'] ?? 0; 
 
 $today = date('Y-m-d');
 $todaysBookingsResult = $conn->query("SELECT COUNT(*) AS count FROM table_bookings WHERE DATE(created_at) = '$today'");
@@ -209,6 +209,7 @@ for ($i = 5; $i >= 0; $i--) {
   </script>
 </body>
 </html>
+
 
 
 
