@@ -2,7 +2,7 @@
 
 require_once('../includes/db.php');
  
-
+ 
 require_once('../vendor/tecnickcom/tcpdf/tcpdf.php');
  
 // Simulated login — replace with $_SESSION
