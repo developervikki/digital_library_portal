@@ -7,7 +7,7 @@ if (file_exists(__DIR__ . '/../.env')) {
             putenv(trim($line));
         }
     }
-}
+} 
 
 // DB credentials (set these in your .env or directly here)
 $host = getenv('DB_HOST') ?: 'localhost';
