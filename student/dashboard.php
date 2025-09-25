@@ -8,7 +8,7 @@ if (!isset($_SESSION['student_id']))
 include '../includes/db.php';  
 include '../includes/header.php';
 
-$user_id = $_SESSION['student_id'];
+$user_id = $_SESSION['student_id']; 
 
 $query = "SELECT name, profile_photo FROM table_students WHERE id = ?";
 $stmt = $conn->prepare($query);
