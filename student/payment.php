@@ -3,7 +3,7 @@ include_once('../includes/db.php');
 include_once('../includes/header.php');
 
 // Simulated login – replace with session logic
-$student_id = 1;
+$student_id = 1; 
 
 // Handle payment form submission
 $payment_msg = '';
