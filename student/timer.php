@@ -5,7 +5,7 @@ include_once('../includes/header.php');
 
 // Simulated login
 $student_id = 1;
-
+ 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $start_time = $_POST['start_time'];
     $end_time = $_POST['end_time'];
