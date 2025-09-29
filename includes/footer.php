@@ -7,7 +7,7 @@
       <p class="text-gray-400 text-sm">
         Digital Library Portal is a quiet, modern space for self-study with smart seating, secure bookings, and study logs — empowering independent learners.
       </p>
-    </div>
+    </div> 
 
     <!-- Quick Links -->
     <div>
