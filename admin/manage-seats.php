@@ -3,7 +3,7 @@ require_once '../includes/db.php';
 require_once '../includes/auth.php';
 requireAdmin();
 
-include '../includes/header-admin.php'; 
+include '../includes/header-admin.php';  
 
 // Fetch Admin Info
 $admin_id = $_SESSION['admin_id'] ?? null;
