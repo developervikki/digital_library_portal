@@ -5,7 +5,7 @@ require_once '../includes/auth.php';
 include '../includes/header.php';
 
 // ✅ Define the function to avoid fatal error
-function formatDateTime($datetime) {
+function formatDateTime($datetime) { 
   return date('d M Y, h:i A', strtotime($datetime));
 }
 
@@ -76,3 +76,4 @@ $data = $result->fetch_assoc();
 </div>
 
 <?php include '../includes/footer.php'; ?>
+
