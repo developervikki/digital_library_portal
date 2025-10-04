@@ -5,7 +5,7 @@ require_once('../includes/db.php');
  
 require_once('../vendor/tecnickcom/tcpdf/tcpdf.php');
   
-// Simulated login — replace with $_SESSION
+// Simulated login — replace with $_SESSION 
 $student_id = 1;
 
 // Fetch student sessions
