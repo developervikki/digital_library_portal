@@ -2,7 +2,7 @@
 
 // Sanitize user input
 function sanitize($data) {
-    return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8'); 
 }
 
 // Format seconds to HH:MM:SS 
