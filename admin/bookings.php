@@ -4,7 +4,7 @@ require_once '../includes/auth.php';
 requireAdmin();  
 include '../includes/header-admin.php';  
     
-function formatDateTime($datetime) {
+function formatDateTime($datetime) { 
   return date('d M Y, h:i A', strtotime($datetime));
 }
 ?>
