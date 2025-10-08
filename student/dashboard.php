@@ -4,7 +4,7 @@ if (!isset($_SESSION['student_id']))
   header("Location: ../login.php");  
   exit();  
 }
-
+ 
 include '../includes/db.php';  
 include '../includes/header.php';
 
