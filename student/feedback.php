@@ -5,7 +5,7 @@ include_once('../includes/header.php');
 // You can add auth check here if needed
    
 $message = "";   
-if ($_SERVER["REQUEST_METHOD"] === "POST") { 
+if ($_SERVER["REQUEST_METHOD"] === "POST") {  
     $student_id = 1; // Replace with actual logged-in user ID from session
     $feedback = trim($_POST['feedback']); 
 
