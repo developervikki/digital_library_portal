@@ -6,7 +6,7 @@ require_once('../includes/db.php');
 require_once('../vendor/tecnickcom/tcpdf/tcpdf.php');
   
 // Simulated login — replace with $_SESSION 
-$student_id = 1;
+$student_id = 1; 
 
 // Fetch student sessions
 $stmt = $conn->prepare("SELECT start_time, end_time, duration FROM table_time_logs WHERE student_id = ? ORDER BY start_time DESC");
