@@ -1,4 +1,4 @@
- <?php
+  <?php
 require_once '../includes/db.php';
 
 // Mark all as read
@@ -63,6 +63,7 @@ $unreadCount = $notifyResult ? $notifyResult->num_rows : 0;
   display: block;
 }
 </style>
+
 
 
 
