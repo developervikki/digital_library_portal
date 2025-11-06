@@ -5,7 +5,7 @@ requireAdmin(); // Ensure only admin accesses
 
 include '../includes/header-admin.php';
  
-function formatDateTime($datetime) {
+function formatDateTime($datetime) { 
   return $datetime ? date('d M Y, h:i A', strtotime($datetime)) : '—';
 }
 ?>
