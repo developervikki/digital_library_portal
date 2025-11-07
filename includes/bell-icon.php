@@ -1,5 +1,5 @@
   <?php
-require_once '../includes/db.php';
+require_once '../includes/db.php'; 
 
 // Mark all as read
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_all_read'])) {
@@ -63,6 +63,7 @@ $unreadCount = $notifyResult ? $notifyResult->num_rows : 0;
   display: block;
 }
 </style>
+
 
 
 
