@@ -1,6 +1,6 @@
  <?php  
 require_once '../includes/db.php'; 
-require_once '../includes/auth.php';  
+require_once '../includes/auth.php';   
 requireAdmin();         
     
 // Fetch stats   
@@ -209,6 +209,7 @@ for ($i = 5; $i >= 0; $i--) {
   </script>
 </body>
 </html>
+
 
 
 
