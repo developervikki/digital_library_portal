@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'])) {
   
   if ($stmt->execute()) {
     header("Location: bookings.php?msg=" . urlencode("Booking deleted successfully."));
-  } else {
+  } else { 
     header("Location: bookings.php?msg=" . urlencode("Failed to delete booking."));
   }
   exit;
@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'])) {
   header("Location: bookings.php?msg=" . urlencode("Invalid delete request."));
   exit;
 }
+
 
 
 
