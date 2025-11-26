@@ -1,7 +1,7 @@
 <?php    
 
 require_once('../includes/db.php');  
- 
+  
  
 require_once('../vendor/tecnickcom/tcpdf/tcpdf.php');
     
