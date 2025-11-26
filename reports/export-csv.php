@@ -1,7 +1,7 @@
 <?php
 require_once('../includes/db.php');
 
-// Simulated login  
+// Simulated login   
 $student_id = 1;   
  
 header('Content-Type: text/csv');  
@@ -21,6 +21,7 @@ while ($row = $result->fetch_assoc()) {
 
 fclose($output);
 exit;
+
 
 
 
