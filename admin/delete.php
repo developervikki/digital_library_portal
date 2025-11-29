@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/db.php';
-require_once '../includes/auth.php';
+require_once '../includes/auth.php'; 
 requireAdmin(); 
  
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'])) {   
@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'])) {
   header("Location: bookings.php?msg=" . urlencode("Invalid delete request."));
   exit;
 }
+
 
 
 
