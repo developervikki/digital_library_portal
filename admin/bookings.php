@@ -138,7 +138,7 @@ function filterCards() {
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -1; 
     top: 0; left: 0;
     background: linear-gradient(135deg, #1e293b, #312e81); /* Tailwind slate-800 to indigo-800 */
   }
