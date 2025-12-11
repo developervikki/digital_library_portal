@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once('../includes/db.php');
 
 // Simulated login   
@@ -21,6 +21,7 @@ while ($row = $result->fetch_assoc()) {
 
 fclose($output);
 exit;
+
 
 
 
