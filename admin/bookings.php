@@ -10,7 +10,7 @@ function formatDateTime($datetime) {
 ?>
 
 <div class="max-w-7xl mx-auto p-6">
-  <h1 class="text-3xl font-bold text-gray-50 mb-6">📋 Manage Seat Bookings</h1>
+  <h1 class="text-3xl font-bold text-gray-50 mb-6">📋 Manage Seat Bookings</h1> 
 
   <?php if (isset($_GET['msg'])): ?>
     <div class="mb-4 p-3 rounded bg-green-100 text-green-800 font-medium shadow">
